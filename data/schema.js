@@ -31,6 +31,13 @@ const typeDefs = `
     contacts: [ContactInput]
    }
 
+   type Alien {
+     id: ID,
+     firstName: String
+     lastName: String
+     planet: String
+   }
+
    type Contact{
      firstName: String
      lastName: String
