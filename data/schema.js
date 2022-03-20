@@ -1,8 +1,9 @@
 import resolvers from "./resolvers";
-import { makeExecutableSchema } from "@graphql-tools/schema";
+// import { makeExecutableSchema } from "@graphql-tools/schema";
+import { ApolloServer, gql } from 'apollo-server-express';
 
 
-const typeDefs = `
+const typeDefs = gql`
    type Friend {
      id: ID
      firstName: String
@@ -55,5 +56,5 @@ const typeDefs = `
     createFriend(input: FriendInput): Friend
   }
 `;
-const schema = makeExecutableSchema({ typeDefs, resolvers })
-export { schema }; 
+const server = new ApolloServer({ typeDefs, resolvers })
+export { server }; 

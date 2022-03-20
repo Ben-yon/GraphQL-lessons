@@ -4,14 +4,14 @@ import { Friends } from './dbConnectors';
 const friendDatabase = {};
 
 // resolver map
-export const resolvers = { 
+export const resolvers = {
   Query: {
     getFriend: ({ id }) => {
-      return new Friend(id, friendDatabase[id]);
+      return new Friends(id, friendDatabase[id]);
     },
   },
-  Mutation:{
-    createFriend: ( _root, { input }) => {
+  Mutation: {
+    createFriend: async (_, { input }) => {
       const newFriend = new Friends({
         firstName: input.firstName,
         lastName: input.lastName,
@@ -23,12 +23,9 @@ export const resolvers = {
 
       });
       newFriend.id = newFriend._id;
-      return new Promise((resolve, object) => {
-        newFriend.save((err) => {
-          if(err) reject(err)
-          else resolve(newFriend)
-        })
-      })
+
+      await newFriend.save();
+      return newFriend;
     }
   },
 };
