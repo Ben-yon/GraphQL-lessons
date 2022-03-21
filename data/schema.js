@@ -54,6 +54,7 @@ const typeDefs = gql`
 
   type Mutation {
     createFriend(input: FriendInput): Friend
+    updateFriend(input: FriendInput): Friend
   }
 `;
 const server = new ApolloServer({ typeDefs, resolvers })
