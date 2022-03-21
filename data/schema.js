@@ -1,4 +1,4 @@
-import resolvers from "./resolvers";
+import { resolvers } from "./resolvers";
 // import { makeExecutableSchema } from "@graphql-tools/schema";
 import { ApolloServer, gql } from 'apollo-server-express';
 

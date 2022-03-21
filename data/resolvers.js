@@ -1,3 +1,4 @@
+import { reject } from 'lodash';
 import mongoose from 'mongoose';
 import { Friends } from './dbConnectors';
 
@@ -11,7 +12,7 @@ export const resolvers = {
     },
   },
   Mutation: {
-    createFriend: async (_, { input }) => {
+    createFriend: async (root, { input }) => {
       const newFriend = new Friends({
         firstName: input.firstName,
         lastName: input.lastName,
@@ -20,13 +21,16 @@ export const resolvers = {
         email: input.email,
         age: input.age,
         contacts: input.contacts
-
       });
       newFriend.id = newFriend._id;
 
-      await newFriend.save();
-      return newFriend;
-    }
+      return new Promise((resolve, object) => {
+        newFriend.save((err) => {
+          if (err) reject(err)
+          else resolve(newFriend)
+        });
+      })
+    },
   },
 };
 
