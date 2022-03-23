@@ -1,15 +1,24 @@
 import { reject } from 'lodash';
 import mongoose from 'mongoose';
-import { Friends } from './dbConnectors';
+import { Friends, Aliens } from './dbConnectors';
 
 const friendDatabase = {};
 
 // resolver map
 export const resolvers = {
   Query: {
-    getFriend: ({ id }) => {
-      return new Friends(id, friendDatabase[id]);
+    getOneFriend: async (_, { id }) => {
+      console.log(mongoose.Types.ObjectId.isValid(id));
+      return new Promise((resolve, object) => {
+        Friends.findById(id, (err, data)=>{
+          if(err) reject(err);
+          else resolve(data);
+        })
+      })
     },
+    getAliens: async ()=> {
+      return Aliens.findAll()
+    }
   },
   Mutation: {
     createFriend: async (root, { input }) => {
@@ -31,6 +40,23 @@ export const resolvers = {
         });
       })
     },
+    updateFriend: async (root, { input }) => {
+      return new Promise((resolve, object) => {
+         Friends.findOneAndUpdate({_id: input.id}, input, {new: true}, (err, friend) => {
+          if(err) reject(err)
+          else resolve(friend)
+        })
+      })
+    },
+    deleteFriend: async (root, { id }) => {
+      return new Promise((resolve, object)=> {
+        Friends.remove({_id: id}, (err)=>{
+          if(err) reject(err);
+          else resolve("Friend has been delted successfully");
+        })
+      })
+    }
+
   },
 };
 

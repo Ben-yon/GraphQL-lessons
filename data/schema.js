@@ -49,12 +49,14 @@ const typeDefs = gql`
      lastName: String
    }
   type Query {
-    getFriend(id: ID): Friend 
+    getOneFriend(id: ID): Friend 
+    getAliens: [Alien]
   }
 
   type Mutation {
     createFriend(input: FriendInput): Friend
     updateFriend(input: FriendInput): Friend
+    deleteFriend(id: ID): String!
   }
 `;
 const server = new ApolloServer({ typeDefs, resolvers })
